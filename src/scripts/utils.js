@@ -107,7 +107,32 @@ function filtrarEstancias(ciudad, huespedesTotales) {
     if (numero >= 1) {
         renderStays(filtrados);
     } else {
-        contenedor.innerHTML = "!No se encontro ninguna Estancia";
+        contenedor.innerHTML = `
+       
+<div class="loader">
+  <div class="loading-text">
+    No se encontraron Estancias<span class="dot">.</span><span class="dot">.</span
+    ><span class="dot">.</span>
+  </div>
+  <div class="loading-bar-background">
+    <div class="loading-bar">
+      <div class="white-bars-container">
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+        <div class="white-bar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+        `;
     }
 
 }
