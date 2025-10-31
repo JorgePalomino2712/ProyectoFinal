@@ -104,7 +104,12 @@ function filtrarEstancias(ciudad, huespedesTotales) {
     });
     let numero = filtrados.length;
     numeroStays.textContent = `${numero} Stay${numero > 1 ? "s" : ""}`;
-    renderStays(filtrados);
+    if (numero >= 1) {
+        renderStays(filtrados);
+    } else {
+        contenedor.innerHTML = "!No se encontro ninguna Estancia";
+    }
+
 }
 
 /* --- MODAL DE BÚSQUEDA --- */
