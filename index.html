@@ -1,60 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./src/styles/output.css">
     <script src="./src/scripts/main.js" defer type="module"></script>
+    <link rel="stylesheet" href="./src/styles/styles.css">
     <link rel="stylesheet" href="./src/styles/output.css">
     <title>PF Windbnd Vanilla</title>
 </head>
 
-<body class="flex items-center flex-col p-4 min-h-screen">
+<body class="flex items-center flex-col p-4 min-h-screen dark:bg-slate-950 dark:text-slate-100">
     <!-- CABECERA CON EL LOGO EL LOS INPUT PARA FILTRAR -->
     <header class="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <!-- ICONO/LOGO -->
         <div class=" flex sm:justify-start"><img src="./src/images/icons/logo-f7862584.svg" alt="logo">
+            <label class="switch">
+                <input checked="true" id="checkbox" type="checkbox" />
+                <span class="slider">
+                    <div class="star star_1"></div>
+                    <div class="star star_2"></div>
+                    <div class="star star_3"></div>
+                    <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+                        <path transform="matrix(.77976 0 0 .78395-299.99-418.63)" fill="#fff"
+                            d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925">
+                        </path>
+                    </svg>
+                </span>
+            </label>
         </div>
+
         <!-- FILTRO DE BUSQUEDA -->
-        <div id="searchBar"
+        <div id="filtro"
             class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg scale-90 flex flex-row items-center justify-between sm:items-center border-2 border-gray-300 rounded-2xl overflow-hidden p-2">
             <p id="ciudades" type="text"
-                class="text-gray-400 flex-1 p-2 text-sm outline-none border-r border-gray-300 min-w-0">Add
+                class="text-gray-400 dark:text-slate-100 flex-1 p-2 text-sm outline-none border-r border-gray-300 min-w-0">
+                Add
                 location
             </p>
             <p id="huespedes" type="text"
-                class="text-gray-400 flex-1 p-2 text-sm outline-none border-r border-gray-300 min-w-0">Add
+                class="text-gray-400 dark:text-slate-100 flex-1 p-2 text-sm outline-none border-r border-gray-300 min-w-0">
+                Add
                 guests</p>
-            <button class="h-8 p-2 flex items-center justify-center cursor-pointer"><img
-                    src="./src/images/icons/search.svg" class="h-full" alt="buscar"></button>
+            <button class="h-8 p-2 flex items-center justify-center cursor-pointer">
+                <img id="buscar" class="h-full" src="./src/images/icons/search.svg" alt="buscar" />
+                <img id="buscar2" class="h-full hidden " src="./src/images/icons/search2.svg" alt="buscar" />
+            </button>
         </div>
 
+
+
+
         <!-- Modal -->
-        <div id="searchModal" class="fixed inset-0 bg-black/50 hidden items-start justify-center z-50">
-            <div class="bg-white shadow-xl w-full max-w-4xl p-6 rounded-2xl ">
+        <div id="modal" class="fixed inset-0 bg-black/50 hidden items-start justify-center z-50 dark:text-slate-100">
+            <div class="bg-white dark:bg-slate-900 shadow-xl w-full p-6 dark:text-slate-100">
                 <!-- Título -->
-                <p class="text-xs font-semibold text-black mb-4">Edit your search</p>
+                <p class="text-xs font-semibold text-black dark:text-slate-100 mb-4">Edit your search</p>
 
                 <!-- Contenedor responsive -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
                     <!-- Columna ciudades -->
                     <div>
-                        <p class="text-xs font-semibold text-gray-400 mb-2">LOCATION</p>
+                        <p class="text-xs font-semibold text-gray-400 dark:text-slate-100 mb-2">LOCATION</p>
                         <input id="cityInput" type="text" placeholder="Search city..."
                             class="w-full border border-gray-200 rounded-xl px-4 py-3 focus:ring-2 focus:ring-orange-400 focus:outline-none" />
 
                         <!-- Lista de ciudades -->
-                        <ul id="cityList" class="mt-3 space-y-2">
+                        <ul id="cityList" class="mt-3 space-y-2 dark:text-slate-100">
                             <!-- Dinámico -->
                         </ul>
                     </div>
 
                     <!-- Columna huéspedes -->
                     <div>
-                        <p class="text-xs font-semibold text-gray-400 mb-2">GUESTS</p>
+                        <p class="text-xs font-semibold text-gray-400 dark:text-slate-100 mb-2">GUESTS</p>
                         <div id="guestInput"
-                            class="w-full border border-gray-200 rounded-xl px-4 py-3 cursor-pointer text-gray-700">
+                            class="w-full border border-gray-200 rounded-xl px-4 py-3 cursor-pointer text-gray-700 dark:text-slate-100">
                             Add guests
                         </div>
 
@@ -63,17 +85,17 @@
                             <!-- Adultos -->
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <p class="font-semibold text-gray-700">Adults</p>
-                                    <p class="text-gray-400 text-sm">Ages 13 or above</p>
+                                    <p class="font-semibold text-gray-700 dark:text-slate-100">Adults</p>
+                                    <p class="text-gray-400 dark:text-slate-400 text-sm">Ages 13 or above</p>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <button data-type="adults"
-                                        class="guest-minus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 hover:bg-gray-100">
+                                        class="guest-minus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 dark:text-slate-100 hover:bg-gray-100">
                                         −
                                     </button>
-                                    <span id="adultCount" class="text-gray-700">0</span>
+                                    <span id="adultCount" class="text-gray-700 dark:text-slate-100">0</span>
                                     <button data-type="adults"
-                                        class="guest-plus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 hover:bg-gray-100">
+                                        class="guest-plus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 dark:text-slate-100 hover:bg-gray-100">
                                         +
                                     </button>
                                 </div>
@@ -82,17 +104,17 @@
                             <!-- Niños -->
                             <div class="flex justify-between items-center">
                                 <div>
-                                    <p class="font-semibold text-gray-700">Children</p>
-                                    <p class="text-gray-400 text-sm">Ages 2–12</p>
+                                    <p class="font-semibold text-gray-700 dark:text-slate-100">Children</p>
+                                    <p class="text-gray-400 dark:text-slate-400 text-sm">Ages 2–12</p>
                                 </div>
                                 <div class="flex items-center gap-3">
                                     <button data-type="children"
-                                        class="guest-minus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 hover:bg-gray-100">
+                                        class="guest-minus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 dark:text-slate-100 hover:bg-gray-100">
                                         −
                                     </button>
-                                    <span id="childCount" class="text-gray-700">0</span>
+                                    <span id="childCount" class="text-gray-700 dark:text-slate-100">0</span>
                                     <button data-type="children"
-                                        class="guest-plus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 hover:bg-gray-100">
+                                        class="guest-plus w-8 h-8 flex items-center justify-center border rounded-full text-lg text-gray-500 dark:text-slate-100 hover:bg-gray-100">
                                         +
                                     </button>
                                 </div>
@@ -104,7 +126,8 @@
                     <div class="flex md:justify-center md:items-center justify-center mt-2 md:mt-0">
                         <button id="applyFilters"
                             class="bg-orange-500 text-white w-[50%] md:w-auto px-6 py-3 rounded-xl text-sm hover:bg-orange-600 flex items-center justify-center gap-2">
-                            <img class="h-4" src="./src/images/icons/search.svg" alt="buscar" />
+                            <img id="buscar" class="h-4 " src="./src/images/icons/search.svg" alt="buscar" />
+                            <img id="buscar2" class="h-4 hidden " src="./src/images/icons/search2.svg" alt="buscar" />
                             <span>Search</span>
                         </button>
                     </div>
@@ -113,12 +136,17 @@
         </div>
     </header>
 
-    <main class="w-full max-w-6xl mt-6 flex flex-col gap-5">
-        <h1 class="font-bold text-2xl w-full">Estancias en Finlandia</h1>
-        <div id="contenedor" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+    <main class="w-full max-w-6xl mt-6 flex flex-col gap-5 mx-auto">
+        <div class="flex justify-between items-center">
+            <h1 class="font-bold text-2xl flex items-center">Stays in Finland</h1>
+            <p id="numeroStays" class="text-sm text-gray-600 dark:text-slate-400 flex items-center justify-center">12+
+                stays</p>
+        </div>
+
+        <div id="contenedor" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 dark:text-slate-100 ">
             <!-- AQUI PONEMOS NUESTRAS CARDS -->
         </div>
-        </div>
+
     </main>
 </body>
 

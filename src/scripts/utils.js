@@ -8,15 +8,19 @@ import { stays } from "./stays.js";
 
 let contenedor = document.querySelector("#contenedor");
 let datos = [];
+let numeroStays = document.querySelector("#numeroStays");
 
 /* CREAMOS LA PROMESA COMO SI ESTUVIERAMOS OBTENIENDO DATOS DE UNA API */
 let getStays = new Promise((resolve, reject) => {
+
     let condition = true;
     if (condition) {
         resolve(stays);
     } else {
         reject("Error al obtener estancias");
     }
+
+
 });
 
 /* CONSUMIMOS LA PROMESA PARA OBTENER LOS DATOS */
@@ -31,27 +35,47 @@ async function consumirPromesa(promesa) {
 
 /* --- MOSTRAR ESTANCIAS --- */
 function renderStays(lista) {
-    contenedor.innerHTML = "";
+    contenedor.innerHTML = `
+
+            <div class="loader ">
+                <span><span></span><span></span><span></span><span></span></span>
+                <div class="base">
+                    <span></span>
+                    <div class="face"></div>
+                </div>
+            </div>
+            <div class="longfazers">
+                <span></span><span></span><span></span><span></span>
+            </div>
+    `;
+    setTimeout(() => {
+        contenedor.innerHTML = "";
+    }, 1700);
     lista.forEach((e) => {
-        let host = e.superHost ? "SUPERHOST" : "";
-        contenedor.innerHTML += `
-        <div class="max-w-sm bg-white border border-gray-200 rounded-lg shadow-sm">
-            <div class="h-48 w-full overflow-hidden">
-                <img class="rounded-t-lg" src="${e.photo}" alt="" class="h-full w-full object-cover" />
+        setTimeout(() => {
+
+            let host = e.superHost ? "SUPERHOST" : "";
+            contenedor.innerHTML += `
+        <div class="max-w-sm transition-all duration-300 hover:shadow-lg hover:scale-105 hover:-translate-y-1">
+            <div class="w-full h-56 ">
+                <img src="${e.photo}" alt="" class=" w-full h-full rounded-2xl object-cover" />
             </div>
             <div class="p-3">
                 <div class="flex justify-between">
                     <h3 class="${!host ? "hidden" : ""} text-xs border rounded-2xl p-1 font-bold">${host ?? ""}</h3>
-                    <h5 class="tracking-tight font-normal text-gray-400 text-xs">${e.type} . ${e.beds || ""} beds</h5>
+                    <h5 class="tracking-tight font-normal text-gray-400 dark:text-slate-500 text-xs">${e.type} . ${e.beds || ""} beds</h5>
                     <div class="flex justify-center items-center">
                         <img src="./src/images/icons/star.svg" alt="estrella" class="w-4 h-4 object-contain mr-1">
                         <p>${e.rating}</p>
                     </div>
                 </div>
-                <p class="mb-3 font-normal text-black text-sm">${e.title}</p>
-                <p class="text-black text-sm">City: ${e.city}</p>
+                <p class="mb-3 font-normal text-black dark:text-slate-100 text-sm">${e.title}</p>
+                <p>City: ${e.city}</p>
+                <p class="text-black dark:text-slate-300 text-sm">Max Guests: ${e.maxGuests}</p>
             </div>
         </div>`;
+        }, 1700);
+
     });
 }
 
@@ -78,13 +102,15 @@ function filtrarEstancias(ciudad, huespedesTotales) {
             : true;
         return ciudadCoincide && huespedesOk;
     });
+    let numero = filtrados.length;
+    numeroStays.textContent = `${numero} Stay${numero > 1 ? "s" : ""}`;
     renderStays(filtrados);
 }
 
 /* --- MODAL DE BÚSQUEDA --- */
 export function initSearchModal() {
-    let searchBar = document.querySelector("#searchBar");
-    let modal = document.querySelector("#searchModal");
+    let filtro = document.querySelector("#filtro");
+    let modal = document.querySelector("#modal");
     let cityInput = document.querySelector("#cityInput");
     let cityList = document.querySelector("#cityList");
     let applyFilters = document.querySelector("#applyFilters");
@@ -93,8 +119,11 @@ export function initSearchModal() {
     let guestInput = document.querySelector("#guestInput");
     let guestControls = document.querySelector("#guestControls");
 
+
     let adults = 0;
     let children = 0;
+
+
 
     /* --- ACTUALIZAR TEXTO DE HUÉSPEDES --- */
     function updateGuestText() {
@@ -106,8 +135,8 @@ export function initSearchModal() {
             selectedGuests.textContent = "Add guests";
             guestInput.textContent = "Add guests";
         }
-        document.getElementById("adultCount").textContent = adults;
-        document.getElementById("childCount").textContent = children;
+        document.querySelector("#adultCount").textContent = adults;
+        document.querySelector("#childCount").textContent = children;
     }
 
     /* --- RENDERIZAR CIUDADES --- */
@@ -117,7 +146,7 @@ export function initSearchModal() {
             let li = document.createElement("li");
             li.textContent = `${stay.city}, ${stay.country}`; // muestra cada ciudad según el dataset
             li.className =
-                "px-4 py-2 rounded-lg cursor-pointer hover:bg-orange-100 text-gray-700";
+                "px-4 py-2 rounded-lg cursor-pointer hover:bg-orange-100 text-gray-700 dark:text-slate-100 dark:hover:bg-slate-800";
             li.addEventListener("click", () => {
                 selectedCity.textContent = `${stay.city},${stay.country}`;
                 cityInput.value = `${stay.city}, ${stay.country}`;
@@ -128,7 +157,7 @@ export function initSearchModal() {
     }
 
     /* --- ABRIR MODAL --- */
-    searchBar.addEventListener("click", () => {
+    filtro.addEventListener("click", () => {
         modal.classList.remove("hidden");
         modal.classList.add("flex");
         cityInput.focus();
@@ -176,15 +205,20 @@ export function initSearchModal() {
         modal.classList.add("hidden");
         let ciudadSeleccionada = cityInput.value.trim();
         let totalHuespedes = adults + children;
-        // Actualizar la barra principal fuera del modal
-        let barraCiudad = document.querySelector("#ciudades");
-        let barraHuespedes = document.querySelector("#huespedes");
-
-        barraCiudad.textContent = ciudadSeleccionada || "Add location";
-        barraHuespedes.textContent =
-            totalHuespedes > 0
-                ? `${totalHuespedes} guest${totalHuespedes > 1 ? "s" : ""}`
-                : "Add guests";
         filtrarEstancias(ciudadSeleccionada, totalHuespedes);
+    });
+}
+
+
+export function darkMode() {
+    let checkbox = document.querySelector("#checkbox");
+    let html = document.documentElement;
+    let buscar1 = document.querySelector("#buscar");
+    let buscar2 = document.querySelector("#buscar2");
+
+    checkbox.addEventListener("click", () => {
+        html.classList.toggle("dark");
+        buscar1.classList.toggle("hidden");
+        buscar2.classList.toggle("hidden");
     });
 }
