@@ -50,7 +50,7 @@ function renderStays(lista) {
     `;
     setTimeout(() => {
         contenedor.innerHTML = "";
-    }, 1700);
+    }, 1500);
     lista.forEach((e) => {
         setTimeout(() => {
 
@@ -74,7 +74,7 @@ function renderStays(lista) {
                 <p class="text-black dark:text-slate-300 text-sm">Max Guests: ${e.maxGuests}</p>
             </div>
         </div>`;
-        }, 1700);
+        }, 1500);
 
     });
 }
@@ -225,5 +225,12 @@ export function darkMode() {
         html.classList.toggle("dark");
         buscar1.classList.toggle("hidden");
         buscar2.classList.toggle("hidden");
+    });
+}
+
+export function recargarPagina() {
+    let boton = document.querySelector("#button");
+    boton.addEventListener("click", () => {
+        traerEstancias();
     });
 }
